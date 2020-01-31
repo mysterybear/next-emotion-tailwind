@@ -1,8 +1,8 @@
-import emotionNormalize from 'emotion-normalize';
+import emotionTailwindPreflight from "emotion-tailwind-preflight";
 import { css } from '@emotion/core';
 
 export const globalStyles = css`
-  ${emotionNormalize}
+  ${emotionTailwindPreflight}
   html,
   body {
     padding: 0;

@@ -11,7 +11,7 @@
     "@emotion/babel-preset-css-prop": "^10.0.27",
     "@emotion/core": "10.0.17",
     "@emotion/styled": "10.0.17",
-    "emotion-normalize": "^10.1.0",
+    "emotion-tailwind-preflight": "^1.0.0",
     "emotion-theming": "^10.0.27",
     "next": "latest",
     "react": "16.10.1",
