@@ -10,8 +10,8 @@ const IndexPage = () => {
   return (
     <>
       <div css={tw`flex`}>
-        <Plane2DVX x0={x0} x1={x1} y0={y0} y1={y1} />
-        <Plane2DD3 x0={x0} x1={x1} y0={y0} y1={y1} />
+        <Plane2DVX x0={x0} x1={x1} y0={y0} y1={y1} f={x => Math.pow(x, 2)} />
+        <Plane2DD3 x0={x0} x1={x1} y0={y0} y1={y1} f={x => Math.pow(x, 3)} />
       </div>
       <div>
         <Range name="x0" value={x0} setter={setX0} min={-16} max={0} step={1} />

@@ -15,6 +15,7 @@ export default ({
   x1 = 10,
   y0 = -10,
   y1 = 10,
+  f,
 }) => {
   const containerRef = useRef();
 
@@ -85,16 +86,15 @@ export default ({
           .x(([x, _]) => scaleX(x))
           .y(([_, y]) => scaleY(y)),
 
-      f = x => Math.pow((x / 2), 2),
+      input = d3.range(x0, x1 + 1, 0.01);
 
-      input = d3.range(x0, x1 + 1, 0.01),
-
-      pathData = line.curve(d3.curveNatural)(R.zip(input, input.map(f)));
-
-    chart.append("path")
-      .attr("d", pathData)
-      .attr("stroke", "black")
-      .attr("fill", "none");
+    if (f) {
+      const pathData = line.curve(d3.curveNatural)(R.zip(input, input.map(f)));
+      chart.append("path")
+        .attr("d", pathData)
+        .attr("stroke", "black")
+        .attr("fill", "none");
+    };
   });
 
   return (

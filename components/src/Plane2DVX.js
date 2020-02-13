@@ -2,7 +2,10 @@ import { AxisLeft, AxisBottom } from '@vx/axis';
 import { scaleLinear } from '@vx/scale';
 import { Group } from '@vx/group'
 import { Grid } from '@vx/grid';
+import { LinePath } from '@vx/shape';
+import { curveNatural } from '@vx/curve';
 import * as R from 'ramda';
+import * as d3 from 'd3';
 
 export default ({
   width = 800,
@@ -16,14 +19,15 @@ export default ({
   x0 = -10,
   x1 = 10,
   y0 = -10,
-  y1 = 10
+  y1 = 10,
+  f,
 }) => {
   const
     xMax = width - margin.left - margin.right,
     yMax = height - margin.top - margin.bottom,
 
-    xUnit = xMax / (x1-x0),
-    yUnit = yMax / (y1-y0),
+    xUnit = xMax / (x1 - x0),
+    yUnit = yMax / (y1 - y0),
 
     xScale = scaleLinear({
       domain: [x0, x1],
@@ -36,7 +40,9 @@ export default ({
     }),
 
     xTicks = R.range(x0, x1 + 1).filter(x => x !== 0),
-    yTicks = R.range(y0, y1 + 1).filter(y => y !== 0);
+    yTicks = R.range(y0, y1 + 1).filter(y => y !== 0),
+
+    input = d3.range(x0, x1 + 1, 0.01);
 
   return (
     <div>
@@ -48,11 +54,22 @@ export default ({
             stroke="rgba(0,0,0,0.2)"
             width={xMax}
             height={yMax}
-            rowTickValues={yTicks.slice(1,yTicks.length-1)}
-            columnTickValues={xTicks.slice(1,xTicks.length-1)}
+            rowTickValues={yTicks.slice(1, yTicks.length - 1)}
+            columnTickValues={xTicks.slice(1, xTicks.length - 1)}
           />
-          <AxisBottom top={yUnit*y1} scale={xScale} tickValues={xTicks} />
-          <AxisLeft left={xUnit*Math.abs(x0)} scale={yScale} tickValues={yTicks} />
+          <AxisBottom top={yUnit * y1} scale={xScale} tickValues={xTicks} />
+          <AxisLeft left={xUnit * Math.abs(x0)} scale={yScale} tickValues={yTicks} />
+          {f &&
+            <LinePath
+              data={R.zip(input, input.map(f))}
+              x={([x, _]) => xScale(x)}
+              y={([_, y]) => yScale(y)}
+              defined={([x, y]) => x <= x1 && x >= x0 && y <= y1 && y >= y0}
+              curve={curveNatural}
+              stroke="black"
+              strokeWidth={1}
+            />
+          }
         </Group>
       </svg>
     </div>
